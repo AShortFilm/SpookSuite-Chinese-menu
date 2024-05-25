@@ -20,7 +20,7 @@ namespace SpookSuite.Menu.Tab
 {
     internal class PlayersTab : MenuTab
     {
-        public PlayersTab() : base("Players") { }
+        public PlayersTab() : base("玩家") { }
 
         private Vector2 scrollPos = Vector2.zero;
         private Vector2 scrollPos2 = Vector2.zero;
@@ -47,26 +47,26 @@ namespace SpookSuite.Menu.Tab
         {
             if (!PhotonNetwork.InRoom) return;
 
-            UI.Header("ALL Players");
-            UI.Button("Kick All", () => Cheat.Instance<KickAll>().Execute());
-            UI.Button("Kill All", () => Cheat.Instance<KillAll>().Execute());
-            UI.Button("Revive All", () => Cheat.Instance<ReviveAll>().Execute());
-            UI.Button("Limbo Others", () => Limbo.AddPlayers(GameObjectManager.players.Where(p => !p.IsLocal).ToList()));
+            UI.Header("所有玩家");
+            UI.Button("全部踢出", () => Cheat.Instance<KickAll>().Execute());
+            UI.Button("全部杀死", () => Cheat.Instance<KillAll>().Execute());
+            UI.Button("全部复活", () => Cheat.Instance<ReviveAll>().Execute());
+            UI.Button("将其他人加入领域", () => Limbo.AddPlayers(GameObjectManager.players.Where(p => !p.IsLocal).ToList()));
             UI.HorizontalSpace(null, () =>
             {
-                UI.Textbox("Bombs", ref BombAll.Value, false, 3); //max 999 otherwise too laggy
-                UI.Button("Bomb All", () => Cheat.Instance<BombAll>().Execute(), null);
+                UI.Textbox("炸弹", ref BombAll.Value, false, 3); //max 999 otherwise too laggy
+                UI.Button("全部轰炸", () => Cheat.Instance<BombAll>().Execute(), null);
             });
-            UI.CheatToggleSlider(Cheat.Instance<SuperSpeedOthers>(), "Super Speed", SuperSpeedOthers.Value.ToString(), ref SuperSpeedOthers.Value, 1, 6);
-            UI.Checkbox("Reverse Others", Cheat.Instance<ReverseOthers>());
+            UI.CheatToggleSlider(Cheat.Instance<SuperSpeedOthers>(), "超高速", SuperSpeedOthers.Value.ToString(), ref SuperSpeedOthers.Value, 1, 6);
+            UI.Checkbox("反转其他人移动按键", Cheat.Instance<ReverseOthers>());
 
             if (Player.localPlayer.Handle().IsDev())
             {
-                UI.Header("Dev Only Non SpookSuite Player Options");
-                UI.Checkbox("Freeze Others", Cheat.Instance<FreezeAll>());
+                UI.Header("仅限操控非SpookSuite玩家");
+                UI.Checkbox("冻结其他人", Cheat.Instance<FreezeAll>());
             }
 
-            UI.CheatToggleSlider(Cheat.Instance<OthersFly>(), "Give Flight", OthersFly.Value.ToString(), ref OthersFly.Value, 1, 30);
+            UI.CheatToggleSlider(Cheat.Instance<OthersFly>(), "给予飞行", OthersFly.Value.ToString(), ref OthersFly.Value, 1, 30);
         }
 
         private void PlayerActions()
@@ -80,55 +80,55 @@ namespace SpookSuite.Menu.Tab
                 UI.Button("WASSUP", () => { });           
             }     
 
-            UI.Header("Selected Player Actions");
+            UI.Header("选择的玩家操作");
 
             GUILayout.TextArea("SteamID: " + (selectedPlayer.Handle().IsDev() ? 0 : selectedPlayer.GetSteamID().m_SteamID));
-            UI.Button("Go To Profile", () => System.Diagnostics.Process.Start("https://steamcommunity.com/profiles/" + selectedPlayer.GetSteamID().m_SteamID));
-            UI.Label("SpookSuite User", selectedPlayer.Handle().IsSpookUser().ToString());
+            UI.Button("打开主页", () => System.Diagnostics.Process.Start("https://steamcommunity.com/profiles/" + selectedPlayer.GetSteamID().m_SteamID));
+            UI.Label("SpookSuite用户", selectedPlayer.Handle().IsSpookUser().ToString());
 
             if (!Player.localPlayer.Handle().IsDev() && selectedPlayer.Handle().IsDev())
             {
-                UI.Label("User IS Dev So You Cant Do Anything :(");
+                UI.Label("用户是开发者，所以你什么都做不了 :(");
                 return;
             }
 
             if (!selectedPlayer.IsLocal)
-                UI.Button("Block RPCs", () => selectedPlayer.Handle().ToggleRPCBlock(), selectedPlayer.Handle().IsRPCBlocked() ? "UnBlock" : "Block");
+                UI.Button("阻止RPC", () => selectedPlayer.Handle().ToggleRPCBlock(), selectedPlayer.Handle().IsRPCBlocked() ? "UnBlock" : "Block");
 
-            UI.Button("Teleport", () => { Player.localPlayer.Reflect().Invoke("Teleport", selectedPlayer.refs.cameraPos.position, new Vector3(0, 0, 0)); }, "Teleport");
-            UI.TextboxAction("Face Text", ref faceText, 3, new UIButton("Set", () => selectedPlayer.Handle().RPC("RPCA_SetVisorText", RpcTarget.All, faceText)));
-            UI.TextboxAction("Face Color", ref faceColor, 8,
+            UI.Button("传送", () => { Player.localPlayer.Reflect().Invoke("Teleport", selectedPlayer.refs.cameraPos.position, new Vector3(0, 0, 0)); }, "Teleport");
+            UI.TextboxAction("面部文字", ref faceText, 3, new UIButton("Set", () => selectedPlayer.Handle().RPC("RPCA_SetVisorText", RpcTarget.All, faceText)));
+            UI.TextboxAction("面部颜色", ref faceColor, 8,
                 new UIButton("Set", () =>
                 {
                     while (faceColor.Length < 6) faceColor += "0";
                     selectedPlayer.refs.visor.ApplyVisorColor(new RGBAColor(faceColor).GetColor());
                 }
             ));
-            UI.Button("test", () => PhotonNetwork.RaiseEvent(20, selectedPlayer.photonView.Owner.ActorNumber, RaiseEventOptions.Default, SendOptions.SendReliable));
-            UI.Button("Spawn Bomb", () => GameUtil.SpawnItem(GameUtil.GetItemByName("bomb").id, selectedPlayer.refs.cameraPos.position), "Bomb");
-            UI.Button("Freeze", () => selectedPlayer.Reflect().Invoke("CallSlowFor", 0f, 4f), "Freeze");
+            UI.Button("测试", () => PhotonNetwork.RaiseEvent(20, selectedPlayer.photonView.Owner.ActorNumber, RaiseEventOptions.Default, SendOptions.SendReliable));
+            UI.Button("生成炸弹", () => GameUtil.SpawnItem(GameUtil.GetItemByName("bomb").id, selectedPlayer.refs.cameraPos.position), "Bomb");
+            UI.Button("冻结", () => selectedPlayer.Reflect().Invoke("CallSlowFor", 0f, 4f), "Freeze");
             
-            UI.Button("Kill", () => selectedPlayer.Reflect().Invoke("CallDie"), "Kill");
-            UI.Button("Revive", () => selectedPlayer.CallRevive(), "Revive");
+            UI.Button("杀死", () => selectedPlayer.Reflect().Invoke("CallDie"), "Kill");
+            UI.Button("复活", () => selectedPlayer.CallRevive(), "Revive");
 
-            UI.Button("Ragdoll", () => selectedPlayer.Reflect().Invoke("CallTakeDamageAndAddForceAndFall", 0f, Vector3.zero, 2f), "Ragdoll");
-            UI.Button("Launch", () => selectedPlayer.Reflect().Invoke("CallTakeDamageAndAddForceAndFall", 0f, selectedPlayer.refs.cameraPos.up * 100, 0f), "Launch");
-            UI.Button("Tase", () => selectedPlayer.Reflect().Invoke("CallTakeDamageAndTase", 1f, 5f));
+            UI.Button("摔倒", () => selectedPlayer.Reflect().Invoke("CallTakeDamageAndAddForceAndFall", 0f, Vector3.zero, 2f), "Ragdoll");
+            UI.Button("肘飞", () => selectedPlayer.Reflect().Invoke("CallTakeDamageAndAddForceAndFall", 0f, selectedPlayer.refs.cameraPos.up * 100, 0f), "Launch");
+            UI.Button("电击", () => selectedPlayer.Reflect().Invoke("CallTakeDamageAndTase", 1f, 5f));
 
-            UI.Button("Force Sit", () => { Sittable s = GameObjectManager.sittables.GetRandom(); selectedPlayer.refs.view.RPC("RPCA_Sit", RpcTarget.All, s.Reflect().GetValue<PhotonView>("view").ViewID, s.Reflect().GetValue<int>("seatID")); });
-            UI.Button("Heal", () => selectedPlayer.Handle().RPC("RPCA_Heal", RpcTarget.All, 100f));
+            UI.Button("强制坐下", () => { Sittable s = GameObjectManager.sittables.GetRandom(); selectedPlayer.refs.view.RPC("RPCA_Sit", RpcTarget.All, s.Reflect().GetValue<PhotonView>("view").ViewID, s.Reflect().GetValue<int>("seatID")); });
+            UI.Button("治愈", () => selectedPlayer.Handle().RPC("RPCA_Heal", RpcTarget.All, 100f));
 
-            UI.Button("Kick", () => { SurfaceNetworkHandler.Instance.photonView.RPC("RPC_LoadScene", selectedPlayer.PhotonPlayer(), "NewMainMenu"); });
-            UI.Button("Send Away", () => ShadowRealmHandler.instance.TeleportPlayerToRandomRealm(selectedPlayer));
-            UI.HorizontalSpace("Limbo", () => 
+            UI.Button("踢出", () => { SurfaceNetworkHandler.Instance.photonView.RPC("RPC_LoadScene", selectedPlayer.PhotonPlayer(), "NewMainMenu"); });
+            UI.Button("传送暗影领域", () => ShadowRealmHandler.instance.TeleportPlayerToRandomRealm(selectedPlayer));
+            UI.HorizontalSpace("领域", () => 
             {
-                UI.Button("Add To Limbo", () => Limbo.limboList.Add(selectedPlayer)); 
-                UI.Button("Remove From Limbo", () => Limbo.limboList.Remove(selectedPlayer));
+                UI.Button("添加到领域", () => Limbo.limboList.Add(selectedPlayer)); 
+                UI.Button("移出领域", () => Limbo.limboList.Remove(selectedPlayer));
             });
 
 
-            UI.Header("Hat Stuff", true);
-            UI.Button("Remove Hat", () => selectedPlayer.refs.view.RPC("RPCA_EquipHat", RpcTarget.All, -1));
+            UI.Header("帽子", true);
+            UI.Button("卸下帽子", () => selectedPlayer.refs.view.RPC("RPCA_EquipHat", RpcTarget.All, -1));
             UI.ButtonGrid<Hat>(HatDatabase.instance.hats.ToList(), h => h.GetName(), "", h => selectedPlayer.refs.view.RPC("RPCA_EquipHat", RpcTarget.All, HatDatabase.instance.GetIndexOfHat(h)), 3);
         }
 
@@ -138,7 +138,7 @@ namespace SpookSuite.Menu.Tab
             float height = SpookSuiteMenu.Instance.contentHeight - 20;
 
             Rect rect = new Rect(0, 0, width, height);
-            GUI.Box(rect, "Player List");
+            GUI.Box(rect, "玩家列表");
 
             GUILayout.BeginVertical(GUILayout.Width(width), GUILayout.Height(height));
 

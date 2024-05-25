@@ -8,7 +8,7 @@ namespace SpookSuite.Menu.Tab
 {
     internal class EnemyTab : MenuTab
     {
-        public EnemyTab() : base("Monsters") { }
+        public EnemyTab() : base("怪物") { }
 
         private Vector2 scrollPos = Vector2.zero;
         private Vector2 scrollPos2 = Vector2.zero;
@@ -16,7 +16,7 @@ namespace SpookSuite.Menu.Tab
         public static string selectedSpawnEnemy;
 
         public int selectedTab = 0;
-        private string[] tabs = { "Enemy Manager", "Enemy Spawner" };
+        private string[] tabs = { "管理怪物", "生成怪物" };
 
         public override void Draw() //todo add stuff to these
         {
@@ -70,23 +70,23 @@ namespace SpookSuite.Menu.Tab
 
         private void GeneralActions()
         {
-            UI.Header("General Actions");
-            UI.Label("Features Coming Soon!");
+            UI.Header("一般操作");
+            UI.Label("即将推出的功能!");
 
         }
         private void EnemyActions()
         {
-            UI.Header("Selected Monster Actions");
-            UI.Label("Features Coming Soon!");
+            UI.Header("选定的怪物动作");
+            UI.Label("即将推出的功能!");
         }
 
         private void SpawnActions()
         {
             if (!PhotonNetwork.MasterClient.IsLocal)
             {
-                UI.Label("Monster Spawner Requires Host");
-                UI.Label("This is the only known monster you can spawn as Non Host");
-                UI.Button("Spawn BigSlap", () =>
+                UI.Label("生成怪物需要房主");
+                UI.Label("这是唯一已知的可以作为非房主生成的怪物");
+                UI.Button("生成BigSlap", () =>
                 {
                     if (!GameUtil.DoesItemExist("Old Painting"))
                         GameUtil.SpawnItem(GameUtil.GetItemByName("Old Painting").id, new Vector3(1000, 1000, 1000));
@@ -95,7 +95,7 @@ namespace SpookSuite.Menu.Tab
                 });
                 return;
             }
-            UI.Button("Spawn Monster", () => MonsterSpawner.SpawnMonster(selectedSpawnEnemy));
+            UI.Button("生成怪物", () => MonsterSpawner.SpawnMonster(selectedSpawnEnemy));
         }
 
         private void LivingEnemyList()

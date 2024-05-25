@@ -9,7 +9,7 @@ namespace SpookSuite.Menu.Tab
 {
     internal class ItemTab : MenuTab
     {
-        public ItemTab() : base("Item") { }
+        public ItemTab() : base("物品") { }
 
         private Vector2 scrollPos = Vector2.zero;
         private string searchText = "";
@@ -29,13 +29,13 @@ namespace SpookSuite.Menu.Tab
         {
             GUILayout.BeginHorizontal();
 
-            UI.Textbox("Search", ref searchText);
+            UI.Textbox("搜索", ref searchText);
             GUILayout.FlexibleSpace();
-            UI.Checkbox("Equip on Spawn", ref equipOnSpawn);
+            UI.Checkbox("面前生成", ref equipOnSpawn);
             GUILayout.FlexibleSpace();
-            UI.Checkbox("Drone Delivery", ref droneDelivery);
+            UI.Checkbox("无人机交付", ref droneDelivery);
             GUILayout.FlexibleSpace();
-            UI.Textbox<int>("Amount:", ref amount, false);
+            UI.Textbox<int>("数量:", ref amount, false);
             GUILayout.EndHorizontal();
 
             scrollPos = GUILayout.BeginScrollView(scrollPos);

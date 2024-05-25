@@ -15,7 +15,7 @@ namespace SpookSuite.Menu.Tab
 {
     internal class DebugTab : MenuTab
     {
-        public DebugTab() : base("Debug", true) { }
+        public DebugTab() : base("调试", true) { }
         private ulong steamLobbyId = 0;
         private int steamLobbyIndex = 0;
         private Vector2 scrollPos = Vector2.zero;
@@ -44,63 +44,63 @@ namespace SpookSuite.Menu.Tab
         {
             scrollPos = GUILayout.BeginScrollView(scrollPos);
 
-            UI.Header("Debugging Info");
+            UI.Header("调试信息");
 
             if (PhotonNetwork.InRoom)
             {
-                UI.Label("IsMasterClient", PhotonNetwork.IsMasterClient ? "Yes" : "No");
-                UI.Label("MasterClient Nickname", PhotonNetwork.MasterClient.NickName);
+                UI.Label("是主机", PhotonNetwork.IsMasterClient ? "Yes" : "No");
+                UI.Label("主机昵称", PhotonNetwork.MasterClient.NickName);
             }
 
-            UI.Header("Lobby Tools");
-            UI.Button("Host Public", () => MainMenuHandler.Instance.SilentHost());
-            UI.Button("Host Private", () => MainMenuHandler.Instance.Host(1));
-            UI.Button("Set Lobby Public", () => SetPublic(true));
-            UI.Button("Set Lobby Private", () => SetPublic(false));
-            UI.Button("Set Lobby Joinable", () => SetJoinable(true));
-            UI.Button("Set Lobby NonJoinable", () => SetJoinable(false));
+            UI.Header("大厅工具");
+            UI.Button("主机公用", () => MainMenuHandler.Instance.SilentHost());
+            UI.Button("主机私用", () => MainMenuHandler.Instance.Host(1));
+            UI.Button("设置大厅公用", () => SetPublic(true));
+            UI.Button("设置大厅私用", () => SetPublic(false));
+            UI.Button("设置大厅可连接", () => SetJoinable(true));
+            UI.Button("设置大厅不可连接", () => SetJoinable(false));
 
-            UI.Header("Notifcations Stuff");
-            UI.Checkbox("Notifcations", Cheat.Instance<Notifications>());
-            RectEdit("Default Rect", ref Notifications.defaultRect);
-            UI.Textbox("Spacing", ref Notifications.spacing, false);
-            UI.Textbox("Width", ref Notifications.width, false);
-            UI.Textbox("Height", ref Notifications.height, false);
-            UI.Button("Test Info", () => { Notifications.PushNotifcation(new Notifcation("Title", "Info", NotificationType.Info)); });
-            UI.Button("Test Warning", () => { Notifications.PushNotifcation(new Notifcation("Title", "Warning", NotificationType.Warning)); });
-            UI.Button("Test Error", () => { Notifications.PushNotifcation(new Notifcation("Title", "Error", NotificationType.Error)); });
-            UI.Button("Test Dev", () => { Notifications.PushNotifcation(new Notifcation("Title", "Dev", NotificationType.Dev)); });
-            UI.Button("Clear ALL", () => { Log.Info($"Cleared {Notifications.notifcations.Count}"); Notifications.notifcations.Clear(); });
+            UI.Header("通知内容");
+            UI.Checkbox("通知", Cheat.Instance<Notifications>());
+            RectEdit("默认矩形", ref Notifications.defaultRect);
+            UI.Textbox("间距", ref Notifications.spacing, false);
+            UI.Textbox("宽度", ref Notifications.width, false);
+            UI.Textbox("高度", ref Notifications.height, false);
+            UI.Button("测试信息", () => { Notifications.PushNotifcation(new Notifcation("Title", "Info", NotificationType.Info)); });
+            UI.Button("测试警告", () => { Notifications.PushNotifcation(new Notifcation("Title", "Warning", NotificationType.Warning)); });
+            UI.Button("测试错误", () => { Notifications.PushNotifcation(new Notifcation("Title", "Error", NotificationType.Error)); });
+            UI.Button("测试开发", () => { Notifications.PushNotifcation(new Notifcation("Title", "Dev", NotificationType.Dev)); });
+            UI.Button("清除所有", () => { Log.Info($"Cleared {Notifications.notifcations.Count}"); Notifications.notifcations.Clear(); });
 
-            UI.Header("Scene Tools");
-            UI.Button("Load Factory", () => LoadScene("FactoryScene"));
-            UI.Button("Load Harbour", () => LoadScene("HarbourScene"));
-            UI.Button("Load Mines", () => LoadScene("MinesScene"));
-            UI.Button("Load Surface", () => LoadScene("SurfaceScene"));
+            UI.Header("场景工具");
+            UI.Button("加载工厂", () => LoadScene("FactoryScene"));
+            UI.Button("加载海港", () => LoadScene("HarbourScene"));
+            UI.Button("装载矿山", () => LoadScene("MinesScene"));
+            UI.Button("加载岛屿", () => LoadScene("SurfaceScene"));
          
-            UI.Header("Debugging Cheats");
+            UI.Header("调试作弊");
 
-            UI.Checkbox("Log Player Prefs", ref logPlayerPrefs);
-            UI.Button("Log RPCS", () => { foreach (string s in PhotonNetwork.PhotonServerSettings.RpcList) Debug.Log(s); });
+            UI.Checkbox("记录玩家参数", ref logPlayerPrefs);
+            UI.Button("记录RPCS", () => { foreach (string s in PhotonNetwork.PhotonServerSettings.RpcList) Debug.Log(s); });
 
-            UI.Button("Load Main Menu", () => LoadScene("NewMainMenu"));
-            UI.Button("Switch To Main Menu", () => SpookPageUI.TransitionToPage<MainMenuMainPage>());
+            UI.Button("加载主菜单", () => LoadScene("NewMainMenu"));
+            UI.Button("切换到主菜单", () => SpookPageUI.TransitionToPage<MainMenuMainPage>());
             
-            UI.Button("Teleport All Items", () => {
+            UI.Button("传送所有物品", () => {
                 GameObjectManager.pickups.ForEach(x => GameUtil.TeleportItem(x));
             });
             
-            UI.Button("Use Diving Bell dontcare", () => GameObjectManager.divingBellButton.Interact(Player.localPlayer));
-            UI.Button("Use Diving Bell Underground", () => GameObjectManager.divingBell.GoUnderground());
-            UI.Button("Use Diving Bell Surface", () => GameObjectManager.divingBell.GoToSurface());
+            UI.Button("使用潜水钟dontcare", () => GameObjectManager.divingBellButton.Interact(Player.localPlayer));
+            UI.Button("使用地下潜水钟", () => GameObjectManager.divingBell.GoUnderground());
+            UI.Button("使用地上潜水钟", () => GameObjectManager.divingBell.GoToSurface());
             CSteamID id = MainMenuHandler.SteamLobbyHandler.Reflect().GetValue<CSteamID>("m_CurrentLobby");
 
-            UI.Button("Get Lobby Data", () => {
+            UI.Button("获取大厅数据", () => {
 
                 int count = SteamMatchmaking.GetLobbyDataCount(id);
                 //GetLobbyDataByIndex(CSteamID steamIDLobby, int iLobbyData, out string pchKey, int cchKeyBufferSize, out string pchValue, int cchValueBufferSize)
                 
-                Debug.Log($"Lobby ID: {id}");
+                Debug.Log($"大厅ID: {id}");
 
                 for (int i = 0; i < count; i++)
                 {
@@ -113,7 +113,7 @@ namespace SpookSuite.Menu.Tab
             if(id.IsValid())
                 GUILayout.TextArea($"steam://joinlobby/2881650/{id}/{PhotonNetwork.MasterClient.GetSteamID()}");
 
-            UI.Button("LobbyList", () => {
+            UI.Button("大厅列表", () => {
 
                 Debug.Log("Fetching Lobby List...");
 
@@ -130,12 +130,12 @@ namespace SpookSuite.Menu.Tab
 
             
 
-            UI.TextboxAction<ulong>("Join Lobby", ref steamLobbyId, 200, new UIButton("OK", () => {
+            UI.TextboxAction<ulong>("加入大厅", ref steamLobbyId, 200, new UIButton("OK", () => {
                 //this.JoinLobby(SteamMatchmaking.GetLobbyByIndex(array.GetRandom<(CSteamID, int)>().Item2));
                 MainMenuHandler.SteamLobbyHandler.Reflect().Invoke("JoinLobby", new CSteamID(steamLobbyId));
             }));
 
-            UI.TextboxAction<int>("Join Lobby ILOBBY", ref steamLobbyIndex, 3, new UIButton("OK", () => {
+            UI.TextboxAction<int>("加入大厅ILOBBY", ref steamLobbyIndex, 3, new UIButton("OK", () => {
                 //this.JoinLobby(SteamMatchmaking.GetLobbyByIndex(array.GetRandom<(CSteamID, int)>().Item2));
                 MainMenuHandler.SteamLobbyHandler.Reflect().Invoke("JoinLobby", SteamMatchmaking.GetLobbyByIndex(steamLobbyIndex));
             }));

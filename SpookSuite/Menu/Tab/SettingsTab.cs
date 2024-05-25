@@ -11,7 +11,7 @@ namespace SpookSuite.Menu.Tab
 {
     internal class SettingsTab : MenuTab
     {
-        public SettingsTab() : base("Settings") { }
+        public SettingsTab() : base("设置") { }
 
         private Vector2 scrollPos = Vector2.zero;
         private float f_leftWidth;
@@ -51,69 +51,69 @@ namespace SpookSuite.Menu.Tab
         private void MenuContent()
         {
             UI.Actions(
-                new UIButton("Reset Settings", () => Settings.Config.RegenerateConfig()),
-                new UIButton("Save Settings", () => Settings.Config.SaveConfig()),
-                new UIButton("Reload Settings", () => Settings.Config.LoadConfig())
+                new UIButton("重置设置", () => Settings.Config.RegenerateConfig()),
+                new UIButton("保存设置", () => Settings.Config.SaveConfig()),
+                new UIButton("加载设置", () => Settings.Config.LoadConfig())
             );
-            UI.Checkbox("Notifcations", Cheat.Instance<Notifications>());
-            UI.NumSelect("Font Size", ref Settings.i_menuFontSize, 5, 30);
-            UI.Slider("Menu Opacity", Settings.f_menuAlpha.ToString("0.00"), ref Settings.f_menuAlpha, 0.1f, 1f);
-            UI.Button("Resize Menu", () => MenuUtil.BeginResizeMenu(), "Resize");
-            UI.Button("Reset Menu", () => SpookSuiteMenu.Instance.ResetMenuSize(), "Reset");
+            UI.Checkbox("通知", Cheat.Instance<Notifications>());
+            UI.NumSelect("字体大小", ref Settings.i_menuFontSize, 5, 30);
+            UI.Slider("菜单透明度", Settings.f_menuAlpha.ToString("0.00"), ref Settings.f_menuAlpha, 0.1f, 1f);
+            UI.Button("调整菜单大小", () => MenuUtil.BeginResizeMenu(), "Resize");
+            UI.Button("重置菜单", () => SpookSuiteMenu.Instance.ResetMenuSize(), "Reset");
 
-            UI.Select("Theme", ref themesselect,
-                new UIOption("Default", () => ThemeUtil.ApplyTheme("Default")),
-                new UIOption("Green", () => ThemeUtil.ApplyTheme("Green")),
-                new UIOption("Blue", () => ThemeUtil.ApplyTheme("Blue"))
+            UI.Select("主题", ref themesselect,
+                new UIOption("默认", () => ThemeUtil.ApplyTheme("Default")),
+                new UIOption("绿色", () => ThemeUtil.ApplyTheme("Green")),
+                new UIOption("蓝色", () => ThemeUtil.ApplyTheme("Blue"))
             );
 
-            UI.Header("Menu Colors");
-            UI.TextboxAction("Primary", ref s_Primary, 8,
+            UI.Header("菜单颜色");
+            UI.TextboxAction("主要", ref s_Primary, 8,
                 new UIButton("Set", () => SetColor(ref Settings.c_primary, s_Primary))
             );
-            UI.TextboxAction("Text", ref s_Text, 8,
+            UI.TextboxAction("文本", ref s_Text, 8,
                 new UIButton("Set", () => SetColor(ref Settings.c_menuText, s_Text))
             );
 
-            UI.Header("Esp Colors");
-            UI.TextboxAction("Items", ref s_ItemEsp, 8,
+            UI.Header("Esp颜色");
+            UI.TextboxAction("物品", ref s_ItemEsp, 8,
                 new UIButton("Set", () => SetColor(ref Settings.c_espItems, s_ItemEsp))
             );
-            UI.TextboxAction("Players", ref s_PlayerEsp, 8,
+            UI.TextboxAction("玩家", ref s_PlayerEsp, 8,
                 new UIButton("Set", () => SetColor(ref Settings.c_espPlayers, s_PlayerEsp))
             );
-            UI.TextboxAction("Monsters", ref s_MonsterEsp, 8,
+            UI.TextboxAction("怪物", ref s_MonsterEsp, 8,
                 new UIButton("Set", () => SetColor(ref Settings.c_espMonsters, s_MonsterEsp))
             );
-            UI.TextboxAction("Diving Bell", ref s_DivingBellEsp, 8,
+            UI.TextboxAction("潜水钟", ref s_DivingBellEsp, 8,
                 new UIButton("Set", () => SetColor(ref Settings.c_espDivingBells, s_DivingBellEsp))
             );
 
-            UI.Header("Cham Colors");
-            UI.TextboxAction("Items", ref s_ItemChams, 8,
+            UI.Header("渲染颜色");
+            UI.TextboxAction("物品", ref s_ItemChams, 8,
                 new UIButton("Set", () => SetColor(ref Settings.c_chamItems, s_ItemChams))
             );
-            UI.TextboxAction("Players", ref s_PlayerChams, 8,
+            UI.TextboxAction("玩家", ref s_PlayerChams, 8,
                 new UIButton("Set", () => SetColor(ref Settings.c_chamPlayers, s_PlayerChams))
             );
-            UI.TextboxAction("Monsters", ref s_MonsterChams, 8,
+            UI.TextboxAction("怪物", ref s_MonsterChams, 8,
                 new UIButton("Set", () => SetColor(ref Settings.c_chamMonsters, s_MonsterChams))
             );
-            UI.TextboxAction("Diving Bell", ref s_DivingBellCham, 8,
+            UI.TextboxAction("潜水钟", ref s_DivingBellCham, 8,
                 new UIButton("Set", () => SetColor(ref Settings.c_chamDivingBell, s_DivingBellCham))
             );
 
-            UI.Header("Reactions");
-            UI.Checkbox("Toggle", Cheat.Instance<RPCReactions>());
-            UI.Checkbox("Notify On Reaction", ref RPCReactions.Value);
+            UI.Header("反应");
+            UI.Checkbox("切换", Cheat.Instance<RPCReactions>());
+            UI.Checkbox("反应时通知", ref RPCReactions.Value);
 
-            ReactionSetter("Sound Spam", ref Settings.reaction_makesound, ref dropdown_makesound);
-            ReactionSetter("Drone Spawning", ref Settings.reaction_dronespawn, ref dropdown_dronespawn);
-            ReactionSetter("Speed Manipulation", ref Settings.reaction_speedmanipulation, ref dropdown_speedmanipulation);
-            ReactionSetter("Kick", ref Settings.reaction_kick, ref dropdown_kick);
-            ReactionSetter("Crash", ref Settings.reaction_crash, ref dropdown_crash);
-            ReactionSetter("Shadow Realm", ref Settings.reaction_shadowrealm, ref dropdown_shadowrealm);
-            ReactionSetter("Black Screen", ref Settings.reaction_blackscreen, ref dropdown_blackscreen);
+            ReactionSetter("声音垃圾", ref Settings.reaction_makesound, ref dropdown_makesound);
+            ReactionSetter("无人机生成", ref Settings.reaction_dronespawn, ref dropdown_dronespawn);
+            ReactionSetter("速度操纵", ref Settings.reaction_speedmanipulation, ref dropdown_speedmanipulation);
+            ReactionSetter("踢出", ref Settings.reaction_kick, ref dropdown_kick);
+            ReactionSetter("崩溃", ref Settings.reaction_crash, ref dropdown_crash);
+            ReactionSetter("暗影领域", ref Settings.reaction_shadowrealm, ref dropdown_shadowrealm);
+            ReactionSetter("黑屏", ref Settings.reaction_blackscreen, ref dropdown_blackscreen);
         }
 
         private void ReactionSetter(string label, ref RPCReactions.reactionType reaction, ref bool drop)
@@ -121,11 +121,11 @@ namespace SpookSuite.Menu.Tab
             RPCReactions.reactionType r = reaction;
 
             UI.Dropdown(label, ref drop,
-                new UIButton("None", () => r = RPCReactions.reactionType.none, r == RPCReactions.reactionType.none ? new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold} : null),
-                new UIButton("Kick", () => r = RPCReactions.reactionType.kick, r == RPCReactions.reactionType.kick ? new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold } : null),
-                new UIButton("Disconnect", () => r = RPCReactions.reactionType.disconnect, r == RPCReactions.reactionType.disconnect ? new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold } : null),
-                new UIButton("Clown Em", () => r = RPCReactions.reactionType.clownem, r == RPCReactions.reactionType.clownem ? new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold } : null),
-                new UIButton("Send Away", () => r = RPCReactions.reactionType.shadowrealm, r == RPCReactions.reactionType.shadowrealm ? new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold } : null)
+                new UIButton("无", () => r = RPCReactions.reactionType.none, r == RPCReactions.reactionType.none ? new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold} : null),
+                new UIButton("踢出", () => r = RPCReactions.reactionType.kick, r == RPCReactions.reactionType.kick ? new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold } : null),
+                new UIButton("断开连接", () => r = RPCReactions.reactionType.disconnect, r == RPCReactions.reactionType.disconnect ? new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold } : null),
+                new UIButton("戏弄", () => r = RPCReactions.reactionType.clownem, r == RPCReactions.reactionType.clownem ? new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold } : null),
+                new UIButton("传送领域", () => r = RPCReactions.reactionType.shadowrealm, r == RPCReactions.reactionType.shadowrealm ? new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold } : null)
 
                 );
 
@@ -141,10 +141,10 @@ namespace SpookSuite.Menu.Tab
 
         private void KeybindContent()
         {
-            UI.Header("Keybinds");
+            UI.Header("快捷键");
             GUILayout.BeginVertical();
 
-            UI.Textbox("Search", ref search, big: false);
+            UI.Textbox("搜索", ref search, big: false);
            
             scrollPos = GUILayout.BeginScrollView(scrollPos);
 
@@ -160,7 +160,7 @@ namespace SpookSuite.Menu.Tab
 
                 KeyCode bind = cheat.keybind;
 
-                string kb = cheat.HasKeybind ? bind.ToString() : "None";
+                string kb = cheat.HasKeybind ? bind.ToString() : "无";
 
                 GUILayout.Label(cheat.GetType().Name);
                 GUILayout.FlexibleSpace();

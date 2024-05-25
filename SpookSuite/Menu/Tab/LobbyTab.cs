@@ -12,7 +12,7 @@ namespace SpookSuite.Menu.Tab
 {
     internal class LobbyTab : MenuTab
     {
-        public LobbyTab() : base("Lobby") { }
+        public LobbyTab() : base("大厅") { }
         private Vector2 scrollPos = Vector2.zero;
         private Vector2 scrollPos2 = Vector2.zero;
         private CallResult<LobbyMatchList_t> matchList;
@@ -39,14 +39,14 @@ namespace SpookSuite.Menu.Tab
             float width = SpookSuiteMenu.Instance.contentWidth * 0.3f - SpookSuiteMenu.Instance.spaceFromLeft * 2;
             float height = SpookSuiteMenu.Instance.contentHeight - 20;
 
-            UI.Button("Refresh", () => {
+            UI.Button("刷新", () => {
                 lobbyList.Clear();
                 matchList = CallResult<LobbyMatchList_t>.Create(new CallResult<LobbyMatchList_t>.APIDispatchDelegate(MatchListReceived));
                 matchList.Set(SteamMatchmaking.RequestLobbyList());
             }, null);
 
             Rect rect = new Rect(0, 0, width, height);
-            GUI.Box(rect, "Lobby List");
+            GUI.Box(rect, "大厅列表");
 
             GUILayout.BeginVertical(GUILayout.Width(width), GUILayout.Height(height));
             
@@ -66,16 +66,16 @@ namespace SpookSuite.Menu.Tab
 
         private void LobbyActions()
         {
-            UI.Header("Lobby Actions");
-            UI.Button("Join", () => LobbyManager.JoinLobby(selectedLobby));
+            UI.Header("大厅操作");
+            UI.Button("加入", () => LobbyManager.JoinLobby(selectedLobby));
         }
 
         private void GeneralActions()
         {
-            UI.Header("General Actions");
-            UI.Checkbox("AntiKick (Experimental)", Cheat.Instance<AntiKick>());
-            UI.Button("Rejoin Previous", LobbyManager.JoinLastLobby);
-            UI.Button("Leave Current", ConnectionStateHandler.Instance.Disconnect);
+            UI.Header("一般操作");
+            UI.Checkbox("防踢 (实验)", Cheat.Instance<AntiKick>());
+            UI.Button("重新加入上一个", LobbyManager.JoinLastLobby);
+            UI.Button("保持当前", ConnectionStateHandler.Instance.Disconnect);
         }
 
         internal void MatchListReceived(LobbyMatchList_t param, bool biofailure)
